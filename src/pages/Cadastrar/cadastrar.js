@@ -1,16 +1,10 @@
 import React from 'react'
 
-import Link from "@mui/material/Link";
 import './cadastrar.css'
 
-import {AppBar, Box, Button, Grid, IconButton, Paper, TextField, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import MyForm from "../../components/ContactForm";
-
-const initialFValues = {
-    fullName: '',
-    email: '',
-}
+import ContactForm from "../../components/ContactForm";
 
 function CreateContact() {
 
@@ -69,18 +63,16 @@ function CreateContact() {
                     </Grid>
                 </Toolbar>
             </AppBar>
-            <Typography sx={{my: 5, mx: 2}} color="text.secondary" align="center">
+            <Typography sx={{my: 5, mx: 2}} color="text.secondary" align="center" component="div">
                 <Box
-                    component="form"
                     sx={{
                         '& .MuiTextField-root': {m: 1, width: '25ch'},
                     }}
                     noValidate
                     autoComplete="off"
                 >
-                    <form>
                         <Grid container>
-                            <MyForm></MyForm>
+                            <ContactForm></ContactForm>
                             {/*<Grid item xs={6}>
 
                                 <TextField
@@ -111,7 +103,6 @@ function CreateContact() {
                             </div>*/}
 
                         </Grid>
-                    </form>
                 </Box>
             </Typography>
         </Paper>

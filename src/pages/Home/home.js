@@ -91,13 +91,13 @@ function Home() {
                     </Grid>
                 </Toolbar>
             </AppBar>
-            <Typography sx={{my: 5, mx: 2}} color="text.secondary" align="center">
+            <Typography sx={{my: 5, mx: 2}} color="text.secondary" align="center" component="div">
                 <Grid container spacing={2}>
                     { contacts.map((contact, key)  => {
 
                         return (
-                            <Grid item xs={4}>
-                                <Card maxHeight="150">
+                            <Grid item xs={4} key={key}>
+                                <Card style={{maxHeight: '150'}}>
                                     <CardMedia
                                         component="img"
                                         height="120"
@@ -105,7 +105,7 @@ function Home() {
                                         alt="default avatar"
                                     />
                                     <CardContent>
-                                        <Typography variant="h5" component="div">
+                                        <Typography variant="h5">
                                             {contact.name}
                                         </Typography>
                                         <Typography sx={{mb: 1.5}} color="text.secondary">

@@ -1,69 +1,61 @@
 import React from 'react';
+import {useFormik} from 'formik';
+import * as yup from 'yup';
+
 import Button from '@mui/material/Button';
-import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-import Link from "@mui/material/Link";
+import {TextField} from "@mui/material";
 
-class MyForm extends React.Component {
+const validationSchema = yup.object({
+    name: yup
+        .string('Digite seu nome')
+        .min(3, 'Nome deve ter pelo menos 3 caracteres')
+        .required('Nome é obrigatorio'),
+    email: yup
+        .string('Digite seu email')
+        .email('Digite um email válido')
+        .required('Email é obrigatório'),
+});
 
-    state = {
-        name: '',
-        email: '',
-    }
+const ContactForm = () => {
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: async (formValues, {setSubmitting}) => {
+            alert(JSON.stringify(formValues, null, 2));
+        },
+    });
 
-    handleChangeName = (event) => {
-        const name = event.target.value;
-        console.log(name)
-        this.setState({name});
-
-    }
-
-    handleChangeEmail = (event) => {
-        const email = event.target.value;
-        console.log(email)
-        this.setState({email});
-    }
-
-    handleSubmit = () => {
-        console.log("deu certo")
-    }
-
-    render() {
-        const {name} = this.state
-        const {email} = this.state;
-        return (
-            <ValidatorForm
-                onSubmit={this.handleSubmit}
-                onError={errors => console.log(errors)}
-            >
-                <TextValidator
-                    label="Nome"
-                    onChange={this.handleChangeName}
+    return (
+        <div>
+            <form onSubmit={formik.handleSubmit} >
+                <TextField
+                    id="name"
                     name="name"
-                    value={name}
-                    validators={['required']}
-                    errorMessages={['Este campo é obrigatório', 'O campo deve ter ao menos 3 caracteres']}
+                    label="Nome"
+                    type="text"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name ? formik.errors.name : ""}
                 />
-                <TextValidator
-                    label="Email"
-                    onChange={this.handleChangeEmail}
+                <TextField
+                    id="email"
                     name="email"
-                    value={email}
-                    validators={['required', 'isEmail']}
-                    errorMessages={['Este campo é obrigatório', 'Email inválido']}
+                    label="E-mail"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email ? formik.errors.email : ""}
                 />
-                <div>
+                <Button color="primary" variant="contained" fullWidth type="submit">
+                    Submit
+                </Button>
+            </form>
+        </div>
+    );
+};
 
-                    <Link href="/" underline="none">
-                        <Button color="error" variant="outlined">
-                            Voltar
-                        </Button>
-                    </Link>
-
-                    <Button type="submit" variant="contained">Submit</Button>
-                </div>
-            </ValidatorForm>
-        );
-    }
-}
-
-export default MyForm
+export default ContactForm;
