@@ -38,10 +38,7 @@ const style = {
 
 function Home() {
 
-    const [contacts, setContacts] = useState([{
-        name: 'italo',
-        email: 'italomachadovilarino@gmail.com'
-    }, {name: 'jão', email: 'jaoafijasi@gmail.com'}])
+    const [contacts, setContacts] = useState([])
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -56,6 +53,16 @@ function Home() {
                 console.log("Deu errado")
             })
     }, [])
+
+    function deleteContact(id) {
+        axios.delete(`http://localhost:8080/contacts/${id}`)
+            .then(() => {
+                setContacts(contacts.filter(contact => contact.id !== id))
+            })
+            .catch(() => {
+                console.log("deu ruim")
+        })
+    }
 
     return (
         <Paper sx={{maxWidth: 936, margin: 'auto', overflow: 'hidden'}}>
@@ -133,7 +140,7 @@ function Home() {
                                                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                                             Tem certeza que deseja excluir este contato?
                                                         </Typography>
-                                                        <Button onClick={handleClose} variant="contained" color="error" sx={{ mr: 3 }}>
+                                                        <Button onClick={() => deleteContact(contact.id)} variant="contained" color="error" sx={{ mr: 3 }}>
                                                             Excluir
                                                         </Button>
                                                     </Box>

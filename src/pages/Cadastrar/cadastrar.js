@@ -8,38 +8,6 @@ import ContactForm from "../../components/ContactForm";
 
 function CreateContact() {
 
-    /*const validate = (fieldValues = values) => {
-        let temp = {...errors}
-        if ('name' in fieldValues)
-            temp.name = fieldValues.name ? "" : "This field is required."
-        if ('email' in fieldValues)
-            temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
-
-        setErrors({
-            ...temp
-        })
-
-        if (fieldValues === values)
-            return Object.values(temp).every(x => x === "")
-    }*/
-
-    /*const {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm
-    } = ContactForm(initialFValues, true, validate);*/
-
-    /*const handleSubmit = e => {
-        e.preventDefault()
-        if (validate()) {
-
-            //resetForm()
-        }
-    }*/
-
     return (
         <Paper sx={{maxWidth: 500, margin: 'auto', overflow: 'hidden'}}>
             <AppBar
@@ -73,35 +41,6 @@ function CreateContact() {
                 >
                         <Grid container>
                             <ContactForm></ContactForm>
-                            {/*<Grid item xs={6}>
-
-                                <TextField
-                                    name="name"
-                                    label="Nome"
-                                    //value={values.name}
-                                    //onChange={handleInputChange}
-                                    //error={errors.name}
-                                />
-
-                                <TextField
-                                    name="email"
-                                    label="Email"
-                                    //value={values.email}
-                                    //onChange={handleInputChange}
-                                    //error={errors.email}
-                                />
-                            </Grid>
-                            <div>
-                                <Button
-                                    type="submit"
-                                    text="Salvar"
-                                />
-                                <Button
-                                    text="Voltar"
-                                    color="default"
-                                />
-                            </div>*/}
-
                         </Grid>
                 </Box>
             </Typography>

@@ -1,9 +1,10 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
+import axios from "axios";
 
 import Button from '@mui/material/Button';
-import {TextField} from "@mui/material";
+import {Link, TextField} from "@mui/material";
 
 const validationSchema = yup.object({
     name: yup
@@ -23,14 +24,18 @@ const ContactForm = () => {
             email: '',
         },
         validationSchema: validationSchema,
-        onSubmit: async (formValues, {setSubmitting}) => {
-            alert(JSON.stringify(formValues, null, 2));
-        },
+        onSubmit: async (formValues, {setSubmitting}) => axios.post("http://localhost:8080/contacts", formValues)
+            .then(() => {
+                alert(JSON.stringify(formValues, null, 2));
+            })
+            .catch(() => {
+                console.log("deu merda")
+            }),
     });
 
     return (
         <div>
-            <form onSubmit={formik.handleSubmit} >
+            <form onSubmit={formik.handleSubmit}>
                 <TextField
                     id="name"
                     name="name"
@@ -50,9 +55,15 @@ const ContactForm = () => {
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     helperText={formik.touched.email ? formik.errors.email : ""}
                 />
-                <Button color="primary" variant="contained" fullWidth type="submit">
-                    Submit
-                </Button>
+                <div>
+                    <Link href="/" underline="none">
+                        <Button color="error" variant="outlined">Voltar</Button>
+                    </Link>
+                    <grid></grid>
+                    <Button color="primary" variant="contained" type="submit">
+                        Enviar
+                    </Button>
+                </div>
             </form>
         </div>
     );
