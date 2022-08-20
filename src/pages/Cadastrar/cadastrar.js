@@ -1,7 +1,5 @@
 import React from 'react'
 
-import './cadastrar.css'
-
 import {AppBar, Box, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ContactForm from "../../components/ContactForm";

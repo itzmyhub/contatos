@@ -13,7 +13,6 @@ import {
     AppBar,
     TextField,
     Button,
-    Tooltip,
     IconButton,
     Toolbar,
     Typography,
@@ -39,10 +38,16 @@ const style = {
 function Home() {
 
     const [contacts, setContacts] = useState([])
+    const [selectedContact, setSelectedContact] = useState({id: '', name: '', email: ''})
 
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpen = (contact) => {
+        setOpen(true);
+        setSelectedContact(contact)
+    }
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     useEffect(() => {
         axios.get("http://localhost:8080/contacts")
@@ -52,16 +57,18 @@ function Home() {
             .catch(() => {
                 console.log("Deu errado")
             })
-    }, [])
+    }, [contacts])
 
     function deleteContact(id) {
         axios.delete(`http://localhost:8080/contacts/${id}`)
             .then(() => {
-                setContacts(contacts.filter(contact => contact.id !== id))
+                setContacts([])
+                handleClose()
             })
             .catch(() => {
                 console.log("deu ruim")
-        })
+            })
+        console.log(id)
     }
 
     return (
@@ -90,7 +97,7 @@ function Home() {
                         </Grid>
                         <Grid item>
                             <Link href="/createContact">
-                                <Button variant="contained" sx={{ mr: 1 }}>
+                                <Button variant="contained" sx={{mr: 1}}>
                                     Add user
                                 </Button>
                             </Link>
@@ -100,7 +107,7 @@ function Home() {
             </AppBar>
             <Typography sx={{my: 5, mx: 2}} color="text.secondary" align="center" component="div">
                 <Grid container spacing={2}>
-                    { contacts.map((contact, key)  => {
+                    {contacts.map((contact, key) => {
 
                         return (
                             <Grid item xs={4} key={key}>
@@ -120,44 +127,41 @@ function Home() {
                                         </Typography>
                                     </CardContent>
                                     <CardActions flex="center">
-                                        <Tooltip title="Edit">
+                                        <Link href={`/editContact/${contact.id}`}>
                                             <IconButton>
                                                 <EditIcon color="inherit" sx={{display: 'block'}}/>
                                             </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Exclude">
-                                            <IconButton onClick={handleOpen}>
-                                                <Modal
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    aria-labelledby="parent-modal-title"
-                                                    aria-describedby="parent-modal-description"
-                                                >
-                                                    <Box sx={style}>
-                                                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                                                            Excluir {contact.name}?
-                                                        </Typography>
-                                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                                            Tem certeza que deseja excluir este contato?
-                                                        </Typography>
-                                                        <Button onClick={() => deleteContact(contact.id)} variant="contained" color="error" sx={{ mr: 3 }}>
-                                                            Excluir
-                                                        </Button>
-                                                    </Box>
-                                                </Modal>
-                                                <DeleteIcon color="error" sx={{display: 'block'}}/>
-                                            </IconButton>
-                                        </Tooltip>
+                                        </Link>
+                                        <IconButton onClick={() => handleOpen(contact)}>
+                                            <DeleteIcon color="error" sx={{display: 'block'}}/>
+                                        </IconButton>
                                     </CardActions>
                                 </Card>
                             </Grid>
                         )
                     })}
                 </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="parent-modal-title"
+                    aria-describedby="parent-modal-description"
+                >
+                    <Box sx={style}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Excluir {selectedContact.name}?
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{mt: 2}}>
+                            Tem certeza que deseja excluir este contato?
+                        </Typography>
+                        <Button onClick={() => deleteContact(selectedContact.id)}
+                                variant="contained" color="error" sx={{mr: 3}}>
+                            Excluir
+                        </Button>
+                    </Box>
+                </Modal>
             </Typography>
         </Paper>
-
-
     )
 }
 
